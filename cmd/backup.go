@@ -25,6 +25,7 @@ var backupCmd = &cobra.Command{
 			Region:          s3Region,
 			Bucket:          s3Bucket,
 			Endpoint:        s3Endpoint,
+			FileName:        s3FileName,
 		}
 
 		app.Backup(vaultCfg, s3Cfg)
