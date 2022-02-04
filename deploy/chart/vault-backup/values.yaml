@@ -68,3 +68,14 @@ s3:
   bucket: "bucket"
   region: "eu-central-1"
   endpoint: ""
+
+vault:
+  token: "secret-token"
+  address: "https://127.0.0.1:8200"
+
+s3:
+  accessKey: ""
+  secretKey: ""
+  bucket: "bucket"
+  region: "eu-central-1"
+  endpoint: ""
