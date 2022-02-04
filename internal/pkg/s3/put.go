@@ -20,7 +20,7 @@ func (s *Client) PutObject(rs io.ReadSeeker, fileName string) error {
 		Body:   rs,
 	})
 	if err != nil {
-		fmt.Errorf("Cant upload file with name ", fileName, ", err:", err)
+		fmt.Errorf("cant upload file with name %s, err: %e", fileName, err)
 
 		return err
 	}

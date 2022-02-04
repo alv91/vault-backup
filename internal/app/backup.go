@@ -4,9 +4,10 @@ import (
 	"bufio"
 	"bytes"
 	"fmt"
+	"time"
+
 	"github.com/alv91/vault-backup/internal/pkg/s3"
 	"github.com/alv91/vault-backup/internal/pkg/vault"
-	"time"
 )
 
 const (
