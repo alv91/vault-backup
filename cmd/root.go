@@ -3,8 +3,10 @@ package cmd
 import (
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/spf13/cobra"
+	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
 )
 
@@ -72,10 +74,29 @@ func initConfig() {
 		viper.SetConfigName(".vault-backup")
 	}
 
-	viper.AutomaticEnv() // read in environment variables that match
+	viper.AutomaticEnv()
+	viper.SetEnvKeyReplacer(strings.NewReplacer("-", "_"))
+
+	_ = viper.BindPFlags(rootCmd.PersistentFlags())
+	bindFlags(rootCmd)
 
 	// If a config file is found, read it in.
 	if err := viper.ReadInConfig(); err == nil {
 		fmt.Fprintln(os.Stderr, "Using config file:", viper.ConfigFileUsed())
 	}
+}
+
+// Bind each cobra flag to its associated viper configuration (config file and environment variable)
+// This is required because viper doesn't work with cobra flags that are also bound to a variable
+// (e.g. using StringVar to bind a flag to a string variable). See https://github.com/spf13/viper/issues/671.
+func bindFlags(cmd *cobra.Command) {
+
+	cmd.PersistentFlags().VisitAll(func(f *pflag.Flag) {
+		// Apply the viper config value to the flag when the flag is not set and viper has a value
+		if !f.Changed && viper.IsSet(f.Name) {
+			val := viper.Get(f.Name)
+			cmd.PersistentFlags().Set(f.Name, fmt.Sprintf("%v", val))
+		}
+	})
+
 }
