@@ -2,9 +2,10 @@ package s3
 
 import (
 	"fmt"
+	"net/url"
+
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/s3"
-	"net/url"
 )
 
 func (s *Client) CopyObject(fileName string) error {
