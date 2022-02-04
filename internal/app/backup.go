@@ -65,5 +65,5 @@ func Backup(vConfig *vault.Config, s3Config *s3.Client) {
 	// flush the writer
 	w.Flush()
 
-	fmt.Printf("Backup with name '%s' created.", fileName)
+	fmt.Printf("Backup with name '%s' created.\n", fileName)
 }

@@ -52,10 +52,6 @@ func init() {
 	rootCmd.PersistentFlags().StringVar(&s3Endpoint, "s3-endpoint", "", "s3 endpoint")
 	rootCmd.PersistentFlags().StringVar(&s3FileName, "s3-filename", "backup-latest.snap", "s3 filename to restore (default: latest)")
 
-	_ = rootCmd.MarkPersistentFlagRequired("vault-address")
-	_ = rootCmd.MarkPersistentFlagRequired("vault-token")
-	_ = rootCmd.MarkPersistentFlagRequired("s3-access-key")
-	_ = rootCmd.MarkPersistentFlagRequired("s3-secret-key")
 }
 
 // initConfig reads in config file and ENV variables if set.
