@@ -26,7 +26,7 @@ var (
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "vault-backup",
-	Short: "Tool for backuping vault using snapshots",
+	Short: "Tool for backing vault using snapshots",
 	Run: func(cmd *cobra.Command, args []string) {
 		cmd.Help()
 	},
@@ -42,15 +42,15 @@ func init() {
 	cobra.OnInitialize(initConfig)
 
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.vault-backup.yaml)")
-	rootCmd.PersistentFlags().StringVarP(&vaultAddr, "vault-address", "a", "https://127.0.0.1:8200", "Vault address")
-	rootCmd.PersistentFlags().StringVarP(&vaultNamespace, "vault-namespace", "n", "admin", "Vault namespace")
-	rootCmd.PersistentFlags().StringVarP(&vaultToken, "vault-token", "t", "", "Vault token")
+	rootCmd.PersistentFlags().StringVarP(&vaultAddr, "vault-address", "a", "https://127.0.0.1:8200", "vault address")
+	rootCmd.PersistentFlags().StringVarP(&vaultNamespace, "vault-namespace", "n", "admin", "vault namespace")
+	rootCmd.PersistentFlags().StringVarP(&vaultToken, "vault-token", "t", "", "vault token")
 	rootCmd.PersistentFlags().StringVar(&s3AccessKey, "s3-access-key", "", "s3 access key")
 	rootCmd.PersistentFlags().StringVar(&s3SecretKey, "s3-secret-key", "", "s3 secret key")
 	rootCmd.PersistentFlags().StringVar(&s3Bucket, "s3-bucket", "", "s3 bucket")
 	rootCmd.PersistentFlags().StringVar(&s3Region, "s3-region", "eu-central-1", "s3 region")
 	rootCmd.PersistentFlags().StringVar(&s3Endpoint, "s3-endpoint", "", "s3 endpoint")
-	rootCmd.PersistentFlags().StringVar(&s3FileName, "s3-filename", "backup-latest.snap", "s3 filename to restore (default: latest)")
+	rootCmd.PersistentFlags().StringVar(&s3FileName, "s3-filename", "backup-latest.snap", "s3 filename to restore")
 
 }
 
