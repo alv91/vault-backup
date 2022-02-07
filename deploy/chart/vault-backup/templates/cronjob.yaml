@@ -23,15 +23,15 @@ spec:
             env:
               - name: VAULT_ADDRESS
                 value: "{{ .Values.vault.address }}"
-              {{ if .Values.vault.s3.region }}
+              {{ if .Values.s3.region }}
               - name: S3_REGION
                 value: "{{ .Values.s3.region }}"
               {{- end }}
-              {{ if .Values.vault.s3.bucket }}
+              {{ if .Values.s3.bucket }}
               - name: S3_BUCKET
                 value: "{{ .Values.s3.bucket }}"
               {{- end }}
-              {{ if .Values.vault.s3.endpoint }}
+              {{ if .Values.s3.endpoint }}
               - name: S3_ENDPOINT
                 value: "{{ .Values.s3.endpoint }}"
               {{- end }}

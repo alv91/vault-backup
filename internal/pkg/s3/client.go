@@ -6,7 +6,6 @@ import (
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/credentials"
-	"github.com/aws/aws-sdk-go/aws/credentials/stscreds"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/s3"
 )
@@ -38,15 +37,16 @@ func (s *Client) Initialize() *s3.S3 {
 	// If AWS_ROLE_ARN is set
 	if isInCluster(arn) {
 
-		sess := session.Must(session.NewSession())
-		creds := stscreds.NewCredentials(sess, arn)
+		sess, err := session.NewSession(&aws.Config{
+			Region: aws.String(s.Region)},
+		)
+		if err != nil {
+			fmt.Println("Error creating session: ", err)
 
-		svc := s3.New(sess, &aws.Config{
-			Region:      aws.String(s.Region),
-			Credentials: creds,
-		})
+			return nil
+		}
 
-		return svc
+		return s3.New(sess)
 	}
 
 	sess, err := session.NewSession(&aws.Config{
@@ -57,6 +57,8 @@ func (s *Client) Initialize() *s3.S3 {
 
 	if err != nil {
 		fmt.Println("Cant establish S3 connection, err: ", err)
+
+		return nil
 	}
 
 	return s3.New(sess)
