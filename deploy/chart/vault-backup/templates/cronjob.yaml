@@ -1,0 +1,61 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ include "vault-backup.fullname" . }}
+  labels:
+    {{- include "vault-backup.labels" . | nindent 4 }}
+spec:
+  concurrencyPolicy: {{ .Values.concurrencyPolicy | quote}}
+  failedJobsHistoryLimit: {{ .Values.failedJobsHistoryLimit }}
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: {{ include "vault-backup.serviceAccountName" . }}
+          automountServiceAccountToken: true
+          containers:
+          - name: {{ .Chart.Name }}
+            image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+            args:
+              - backup
+            command:
+            - vault-backup
+            env:
+              - name: VAULT_ADDRESS
+                value: "{{ .Values.vault.address }}"
+              {{ if .Values.s3.region }}
+              - name: S3_REGION
+                value: "{{ .Values.s3.region }}"
+              {{- end }}
+              {{ if .Values.s3.bucket }}
+              - name: S3_BUCKET
+                value: "{{ .Values.s3.bucket }}"
+              {{- end }}
+              {{ if .Values.s3.endpoint }}
+              - name: S3_ENDPOINT
+                value: "{{ .Values.s3.endpoint }}"
+              {{- end }}
+            envFrom:
+              - secretRef:
+                  name: {{ include "vault-backup.fullname" . }}
+            imagePullPolicy: {{ .Values.image.pullPolicy }}
+            resources:
+{{ toYaml .Values.resources | trim | indent 14 }}
+          dnsPolicy: ClusterFirst
+          {{- with .Values.imagePullSecrets }}
+          imagePullSecrets:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          restartPolicy: OnFailure
+          terminationGracePeriodSeconds: 30
+          {{- with .Values.nodeSelector }}
+          nodeSelector:
+            {{- toYaml . | trim | nindent 12 }}
+          {{- end }}
+          {{- with .Values.tolerations }}
+          tolerations:
+            {{- toYaml . | trim | nindent 12 }}
+          {{- end }}
+  schedule: {{ .Values.schedule | quote}}
+  successfulJobsHistoryLimit: {{ .Values.successfulJobsHistoryLimit }}
+  suspend: {{ .Values.suspend }}
