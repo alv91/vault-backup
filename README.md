@@ -9,11 +9,11 @@ under the "latest" name.
 
 You can install vault-backup using the following go command
 
-    go get github.com/hashicorp/vault-backup
+    go get github.com/alv91/vault-backup
 
 or the easiest way use docker image
 
-    docker pull hashicorp/vault-backup:latest
+    docker pull alv91/vault-backup:latest
 
 If you want to use another version, check [docker hub](https://hub.docker.com/r/alv91/vault-backup)
 
@@ -76,7 +76,8 @@ docker run -it --rm -e VAULT_TOKEN=xxx -e VAULT_ADDRESS=http://vault.vault:8200 
 To install the helm chart use the following command. It will create the cron job with execution every 10 minutes.
 
 ```
-helm install --name vault-backup --namespace vault-backup deploy/chart/vault-backup/ \
+helm repo add thebug https://thebug.pl/helm-charts
+helm install --name vault-backup --namespace vault-backup thebug/vault-backup \
   --set vault.address=http://vault.vault:8200 \ 
   --set vault.token=xxx --set s3.accessKey=xxx \
   --set s3.secretKey=xxx \
