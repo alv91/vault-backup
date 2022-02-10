@@ -9,7 +9,7 @@ under the "latest" name.
 
 You can install vault-backup using the following go command
 
-    go get github.com/alv91/vault-backup
+    go install github.com/alv91/vault-backup
 
 or the easiest way use docker image
 
