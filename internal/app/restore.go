@@ -10,7 +10,7 @@ import (
 	"github.com/alv91/vault-backup/internal/pkg/vault"
 )
 
-func Restore(vConfig *vault.Config, s3Config *s3.Client) {
+func Restore(vConfig *vault.Config, s3Config *s3.Client) (err error) {
 	fmt.Println("Starting restore...")
 
 	// create s3 client
@@ -20,7 +20,7 @@ func Restore(vConfig *vault.Config, s3Config *s3.Client) {
 	if s3Client.HeadObject() == nil {
 		fmt.Println("Backup not found in s3 bucket!")
 
-		return
+		return err
 	}
 
 	// get backup from s3Config
@@ -29,7 +29,7 @@ func Restore(vConfig *vault.Config, s3Config *s3.Client) {
 	if err != nil {
 		fmt.Println(err)
 
-		return
+		return err
 	}
 
 	// create new buffer writer
@@ -41,7 +41,7 @@ func Restore(vConfig *vault.Config, s3Config *s3.Client) {
 	if err != nil {
 		fmt.Println(err)
 
-		return
+		return err
 	}
 
 	// restore vault backup
@@ -49,8 +49,10 @@ func Restore(vConfig *vault.Config, s3Config *s3.Client) {
 	if err != nil {
 		fmt.Println(err)
 
-		return
+		return err
 	}
 
 	fmt.Printf("Restored backup with name '%s'.", s3Config.FileName)
+
+	return nil
 }

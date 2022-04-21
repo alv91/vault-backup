@@ -19,6 +19,7 @@ var restoreCmd = &cobra.Command{
 			Token:        vaultToken,
 			Address:      vaultAddr,
 			Namespace:    vaultNamespace,
+			Timeout:      vaultTimeout,
 			ForceRestore: forceRestore,
 		}
 
@@ -31,7 +32,10 @@ var restoreCmd = &cobra.Command{
 			FileName:        s3FileName,
 		}
 
-		app.Restore(vaultCfg, s3Cfg)
+		err := app.Restore(vaultCfg, s3Cfg)
+		if err != nil {
+			panic(err)
+		}
 	},
 }
 

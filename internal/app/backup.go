@@ -15,7 +15,7 @@ const (
 	SNAPASHOT_EXTENSION = "snap"
 )
 
-func Backup(vConfig *vault.Config, s3Config *s3.Client) {
+func Backup(vConfig *vault.Config, s3Config *s3.Client) (err error) {
 	fileName := fmt.Sprintf("backup-%s.%s", time.Now().Format(TIME_LAYOUT), SNAPASHOT_EXTENSION)
 
 	fmt.Println("Starting backup...")
@@ -25,7 +25,7 @@ func Backup(vConfig *vault.Config, s3Config *s3.Client) {
 	if err != nil {
 		fmt.Println(err)
 
-		return
+		return err
 	}
 
 	// create s3 client
@@ -40,7 +40,7 @@ func Backup(vConfig *vault.Config, s3Config *s3.Client) {
 	if err != nil {
 		fmt.Println(err)
 
-		return
+		return err
 	}
 
 	// read from buffer
@@ -51,7 +51,7 @@ func Backup(vConfig *vault.Config, s3Config *s3.Client) {
 	if err != nil {
 		fmt.Println(err)
 
-		return
+		return err
 	}
 
 	// copy this file to latest backup
@@ -59,11 +59,13 @@ func Backup(vConfig *vault.Config, s3Config *s3.Client) {
 	if err != nil {
 		fmt.Println(err)
 
-		return
+		return err
 	}
 
 	// flush the writer
 	w.Flush()
 
 	fmt.Printf("Backup with name '%s' created.\n", fileName)
+
+	return nil
 }

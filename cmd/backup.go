@@ -17,6 +17,7 @@ var backupCmd = &cobra.Command{
 			Token:     vaultToken,
 			Address:   vaultAddr,
 			Namespace: vaultNamespace,
+			Timeout:   vaultTimeout,
 		}
 
 		s3Cfg := &s3.Client{
@@ -28,7 +29,10 @@ var backupCmd = &cobra.Command{
 			FileName:        s3FileName,
 		}
 
-		app.Backup(vaultCfg, s3Cfg)
+		err := app.Backup(vaultCfg, s3Cfg)
+		if err != nil {
+			panic(err)
+		}
 	},
 }
 

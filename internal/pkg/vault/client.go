@@ -2,6 +2,7 @@ package vault
 
 import (
 	vault "github.com/hashicorp/vault/api"
+	"time"
 )
 
 const DEFAULT_VAULT_NAMESPACE = "admin"
@@ -18,6 +19,7 @@ type Config struct {
 	ForceRestore bool
 	TmpPath      string
 	FileName     string
+	Timeout      time.Duration
 }
 
 func NewClient(config *Config) (*Client, error) {
@@ -32,6 +34,7 @@ func NewClient(config *Config) (*Client, error) {
 
 	if config.Token != "" {
 		client.SetToken(config.Token)
+		client.SetClientTimeout(config.Timeout)
 	}
 
 	if config.Namespace == "" {
