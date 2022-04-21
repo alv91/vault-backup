@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"strings"
+	"time"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
@@ -15,6 +16,7 @@ var (
 	vaultAddr      string
 	vaultToken     string
 	vaultNamespace string
+	vaultTimeout   time.Duration
 	s3AccessKey    string
 	s3SecretKey    string
 	s3Bucket       string
@@ -45,6 +47,7 @@ func init() {
 	rootCmd.PersistentFlags().StringVarP(&vaultAddr, "vault-address", "a", "https://127.0.0.1:8200", "vault address")
 	rootCmd.PersistentFlags().StringVarP(&vaultNamespace, "vault-namespace", "n", "admin", "vault namespace")
 	rootCmd.PersistentFlags().StringVarP(&vaultToken, "vault-token", "t", "", "vault token")
+	rootCmd.PersistentFlags().DurationVarP(&vaultTimeout, "vault-timeout", "timeout", 60*time.Second, "vault client timeout")
 	rootCmd.PersistentFlags().StringVar(&s3AccessKey, "s3-access-key", "", "s3 access key")
 	rootCmd.PersistentFlags().StringVar(&s3SecretKey, "s3-secret-key", "", "s3 secret key")
 	rootCmd.PersistentFlags().StringVar(&s3Bucket, "s3-bucket", "", "s3 bucket")
